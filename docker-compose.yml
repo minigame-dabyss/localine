@@ -1,0 +1,30 @@
+version: '3'
+services:
+  server:
+    command: /go/src/localine/server.sh
+    build:
+      context: ./server
+    volumes:
+      - ./server:/go/src/localine
+    ports:
+      - "9090:9090"
+
+  envoy:
+    build:
+      context: ./proxy
+    ports:
+      - "8080:8080"
+    links:
+      - server
+    tty: true
+
+  client:
+    command: /client/client.sh
+    build:
+      context: ./client
+    volumes:
+      - ./client:/client
+      - /client/node_modules
+    ports:
+      - "3000:3000"
+    tty: true
