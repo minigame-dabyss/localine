@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	port = ":9090"
+	port     = ":9090"
+	location = "Asia/Tokyo"
 )
 
 type server struct {
@@ -19,7 +20,7 @@ type server struct {
 	requests []*pb.CreateMessageRequest
 }
 
-func (s *server) GetMessages(req *pb.GetMessagesRequest, stream pb.Messenger_GetMessagesServer) (error) {
+func (s *server) GetMessages(req *pb.GetMessagesRequest, stream pb.Messenger_GetMessagesServer) error {
 	for _, r := range s.requests {
 		if err := stream.Send(&pb.GetMessagesResponse{Message: r.GetMessage()}); err != nil {
 			return err
@@ -41,22 +42,26 @@ func (s *server) GetMessages(req *pb.GetMessagesRequest, stream pb.Messenger_Get
 	}
 }
 
-func (s *server) CreateMessage(ctx context.Context,req *pb.CreateMessageRequest) (*pb.CreateMessageResponse,error){
+func (s *server) CreateMessage(ctx context.Context, req *pb.CreateMessageRequest) (*pb.CreateMessageResponse, error) {
 	log.Printf("Received: %v", req.GetMessage())
-	newR := &pb.CreateMessageRequest{Message: req.GetMessage() + ": " + time.Now().Format("2006-01-02 15:04:05")}
+	loc, err := time.LoadLocation(location)
+	if err != nil {
+		loc = time.FixedZone(location, 9*60*60)
+	}
+	newR := &pb.CreateMessageRequest{Message: req.GetMessage() + ": " + time.Now().In(loc).Format("2006-01-02 15:04:05")}
 	s.requests = append(s.requests, newR)
 	return &pb.CreateMessageResponse{Message: req.GetMessage()}, nil
 }
 
-func main(){
-	lis,err := net.Listen("tcp",port)
-	if err!=nil{
-		log.Fatalf("failed to listen: %v",err)
+func main() {
+	lis, err := net.Listen("tcp", port)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
 	}
-	s:= grpc.NewServer()
-	pb.RegisterMessengerServer(s,&server{})
+	s := grpc.NewServer()
+	pb.RegisterMessengerServer(s, &server{})
 	reflection.Register(s)
-	if err := s.Serve(lis);err!=nil{
-		log.Fatalf("failed to serve: %v",err)
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
 	}
 }
