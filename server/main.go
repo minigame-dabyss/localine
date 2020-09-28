@@ -22,7 +22,7 @@ type server struct {
 
 func (s *server) GetMessages(req *pb.GetMessagesRequest, stream pb.Messenger_GetMessagesServer) error {
 	for _, r := range s.requests {
-		if err := stream.Send(&pb.GetMessagesResponse{Message: r.GetMessage()}); err != nil {
+		if err := stream.Send(&pb.GetMessagesResponse{UserName:r.GetUserName(),Message: r.GetMessage()}); err != nil {
 			return err
 		}
 	}
@@ -34,7 +34,7 @@ func (s *server) GetMessages(req *pb.GetMessagesRequest, stream pb.Messenger_Get
 		if previousCount < currentCount {
 			r := s.requests[currentCount-1]
 			log.Printf("Sent: %v", r.GetMessage())
-			if err := stream.Send(&pb.GetMessagesResponse{Message: r.GetMessage()}); err != nil {
+			if err := stream.Send(&pb.GetMessagesResponse{UserName:r.GetUserName(),Message: r.GetMessage()}); err != nil {
 				return err
 			}
 		}
@@ -48,9 +48,9 @@ func (s *server) CreateMessage(ctx context.Context, req *pb.CreateMessageRequest
 	if err != nil {
 		loc = time.FixedZone(location, 9*60*60)
 	}
-	newR := &pb.CreateMessageRequest{Message: req.GetMessage() + ": " + time.Now().In(loc).Format("2006-01-02 15:04:05")}
+	newR := &pb.CreateMessageRequest{UserName:req.GetUserName(),Message: req.GetMessage() + ": " + time.Now().In(loc).Format("2006-01-02 15:04:05")}
 	s.requests = append(s.requests, newR)
-	return &pb.CreateMessageResponse{Message: req.GetMessage()}, nil
+	return &pb.CreateMessageResponse{UserName:req.GetUserName(),Message: req.GetMessage()}, nil
 }
 
 func main() {

@@ -235,7 +235,8 @@ proto.messenger.GetMessagesResponse.prototype.toObject = function(opt_includeIns
  */
 proto.messenger.GetMessagesResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    message: jspb.Message.getFieldWithDefault(msg, 1, "")
+    username: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    message: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -274,6 +275,10 @@ proto.messenger.GetMessagesResponse.deserializeBinaryFromReader = function(msg, 
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
+      msg.setUsername(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
       msg.setMessage(value);
       break;
     default:
@@ -305,10 +310,17 @@ proto.messenger.GetMessagesResponse.prototype.serializeBinary = function() {
  */
 proto.messenger.GetMessagesResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getMessage();
+  f = message.getUsername();
   if (f.length > 0) {
     writer.writeString(
       1,
+      f
+    );
+  }
+  f = message.getMessage();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
       f
     );
   }
@@ -316,10 +328,10 @@ proto.messenger.GetMessagesResponse.serializeBinaryToWriter = function(message, 
 
 
 /**
- * optional string message = 1;
+ * optional string userName = 1;
  * @return {string}
  */
-proto.messenger.GetMessagesResponse.prototype.getMessage = function() {
+proto.messenger.GetMessagesResponse.prototype.getUsername = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -328,8 +340,26 @@ proto.messenger.GetMessagesResponse.prototype.getMessage = function() {
  * @param {string} value
  * @return {!proto.messenger.GetMessagesResponse} returns this
  */
-proto.messenger.GetMessagesResponse.prototype.setMessage = function(value) {
+proto.messenger.GetMessagesResponse.prototype.setUsername = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string message = 2;
+ * @return {string}
+ */
+proto.messenger.GetMessagesResponse.prototype.getMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.messenger.GetMessagesResponse} returns this
+ */
+proto.messenger.GetMessagesResponse.prototype.setMessage = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
@@ -365,7 +395,8 @@ proto.messenger.CreateMessageRequest.prototype.toObject = function(opt_includeIn
  */
 proto.messenger.CreateMessageRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    message: jspb.Message.getFieldWithDefault(msg, 1, "")
+    username: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    message: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -404,6 +435,10 @@ proto.messenger.CreateMessageRequest.deserializeBinaryFromReader = function(msg,
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
+      msg.setUsername(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
       msg.setMessage(value);
       break;
     default:
@@ -435,10 +470,17 @@ proto.messenger.CreateMessageRequest.prototype.serializeBinary = function() {
  */
 proto.messenger.CreateMessageRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getMessage();
+  f = message.getUsername();
   if (f.length > 0) {
     writer.writeString(
       1,
+      f
+    );
+  }
+  f = message.getMessage();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
       f
     );
   }
@@ -446,10 +488,10 @@ proto.messenger.CreateMessageRequest.serializeBinaryToWriter = function(message,
 
 
 /**
- * optional string message = 1;
+ * optional string userName = 1;
  * @return {string}
  */
-proto.messenger.CreateMessageRequest.prototype.getMessage = function() {
+proto.messenger.CreateMessageRequest.prototype.getUsername = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -458,8 +500,26 @@ proto.messenger.CreateMessageRequest.prototype.getMessage = function() {
  * @param {string} value
  * @return {!proto.messenger.CreateMessageRequest} returns this
  */
-proto.messenger.CreateMessageRequest.prototype.setMessage = function(value) {
+proto.messenger.CreateMessageRequest.prototype.setUsername = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string message = 2;
+ * @return {string}
+ */
+proto.messenger.CreateMessageRequest.prototype.getMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.messenger.CreateMessageRequest} returns this
+ */
+proto.messenger.CreateMessageRequest.prototype.setMessage = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
@@ -495,7 +555,8 @@ proto.messenger.CreateMessageResponse.prototype.toObject = function(opt_includeI
  */
 proto.messenger.CreateMessageResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    message: jspb.Message.getFieldWithDefault(msg, 1, "")
+    username: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    message: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -534,6 +595,10 @@ proto.messenger.CreateMessageResponse.deserializeBinaryFromReader = function(msg
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
+      msg.setUsername(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
       msg.setMessage(value);
       break;
     default:
@@ -565,10 +630,17 @@ proto.messenger.CreateMessageResponse.prototype.serializeBinary = function() {
  */
 proto.messenger.CreateMessageResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getMessage();
+  f = message.getUsername();
   if (f.length > 0) {
     writer.writeString(
       1,
+      f
+    );
+  }
+  f = message.getMessage();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
       f
     );
   }
@@ -576,10 +648,10 @@ proto.messenger.CreateMessageResponse.serializeBinaryToWriter = function(message
 
 
 /**
- * optional string message = 1;
+ * optional string userName = 1;
  * @return {string}
  */
-proto.messenger.CreateMessageResponse.prototype.getMessage = function() {
+proto.messenger.CreateMessageResponse.prototype.getUsername = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -588,8 +660,26 @@ proto.messenger.CreateMessageResponse.prototype.getMessage = function() {
  * @param {string} value
  * @return {!proto.messenger.CreateMessageResponse} returns this
  */
-proto.messenger.CreateMessageResponse.prototype.setMessage = function(value) {
+proto.messenger.CreateMessageResponse.prototype.setUsername = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string message = 2;
+ * @return {string}
+ */
+proto.messenger.CreateMessageResponse.prototype.getMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.messenger.CreateMessageResponse} returns this
+ */
+proto.messenger.CreateMessageResponse.prototype.setMessage = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 

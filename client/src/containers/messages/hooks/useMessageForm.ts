@@ -3,9 +3,18 @@ import { useState, useCallback, SyntheticEvent } from "react";
 import { MessengerClient } from "../../../proto/MessengerServiceClientPb";
 
 export const useMessageForm = (client: MessengerClient) => {
+    const [userName, setUserName] = useState<string>("");
     const [message, setMessage] = useState<string>("");
 
-    const onChange = useCallback(
+    const onUserNameChange = useCallback(
+        (event: SyntheticEvent) => {
+            const target = event.target as HTMLInputElement;
+            setUserName(target.value);
+        },
+        [setUserName]
+    );
+
+    const onMessageChange = useCallback(
         (event: SyntheticEvent) => {
             const target = event.target as HTMLInputElement;
             setMessage(target.value);
@@ -17,16 +26,19 @@ export const useMessageForm = (client: MessengerClient) => {
         (event: SyntheticEvent) => {
             event.preventDefault();
             const req = new CreateMessageRequest();
+            req.setUsername(userName)
             req.setMessage(message);
             client.createMessage(req, null, res => console.log(res));
             setMessage("");
         },
-        [client, message]
+        [client, userName,message]
     );
 
     return {
+        userName,
         message,
-        onChange,
+        onUserNameChange,
+        onMessageChange,
         onSubmit
     };
 };

@@ -15,6 +15,9 @@ export namespace GetMessagesRequest {
 }
 
 export class GetMessagesResponse extends jspb.Message {
+  getUsername(): string;
+  setUsername(value: string): void;
+
   getMessage(): string;
   setMessage(value: string): void;
 
@@ -28,11 +31,15 @@ export class GetMessagesResponse extends jspb.Message {
 
 export namespace GetMessagesResponse {
   export type AsObject = {
+    username: string,
     message: string,
   }
 }
 
 export class CreateMessageRequest extends jspb.Message {
+  getUsername(): string;
+  setUsername(value: string): void;
+
   getMessage(): string;
   setMessage(value: string): void;
 
@@ -46,11 +53,15 @@ export class CreateMessageRequest extends jspb.Message {
 
 export namespace CreateMessageRequest {
   export type AsObject = {
+    username: string,
     message: string,
   }
 }
 
 export class CreateMessageResponse extends jspb.Message {
+  getUsername(): string;
+  setUsername(value: string): void;
+
   getMessage(): string;
   setMessage(value: string): void;
 
@@ -64,6 +75,7 @@ export class CreateMessageResponse extends jspb.Message {
 
 export namespace CreateMessageResponse {
   export type AsObject = {
+    username: string,
     message: string,
   }
 }
