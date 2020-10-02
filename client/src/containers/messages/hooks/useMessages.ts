@@ -1,9 +1,9 @@
-import { GetMessagesRequest,GetMessagesResponse} from "../../../proto/messenger_pb";
-import { useState, useEffect } from "react";
-import { MessengerClient } from "../../../proto/MessengerServiceClientPb";
+import {GetMessagesRequest, GetMessagesResponse, SourceType} from "../../../proto/messenger_pb";
+import {useEffect, useState} from "react";
+import {MessengerClient} from "../../../proto/MessengerServiceClientPb";
 
-export const useMessages = (client: MessengerClient) => {
-     const [messages, setMessages] = useState<GetMessagesResponse[]>([]);
+export const useMessages = (client: MessengerClient,userId:string,isGroup:boolean) => {
+    const [messages, setMessages] = useState<GetMessagesResponse[]>([]);
 
     useEffect(() => {
         const request = new GetMessagesRequest();
@@ -11,9 +11,12 @@ export const useMessages = (client: MessengerClient) => {
         stream$.on("data", (m) => {
             setMessages(state => [...state, m]);
         });
+
     }, [client]);
 
     return {
-        messages
+        messages,
+        userId,
+        isGroup,
     };
 };

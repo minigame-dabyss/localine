@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"crypto/md5"
+	"encoding/hex"
+	"encoding/json"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	pb "localine/server/proto"
 	"log"
 	"net"
-	"time"
 )
 
 const (
@@ -17,24 +19,26 @@ const (
 
 type server struct {
 	pb.UnimplementedMessengerServer
-	requests []*pb.CreateMessageRequest
+	messages []*pb.CreateMessageResponse
 }
 
 func (s *server) GetMessages(req *pb.GetMessagesRequest, stream pb.Messenger_GetMessagesServer) error {
-	for _, r := range s.requests {
-		if err := stream.Send(&pb.GetMessagesResponse{UserName:r.GetUserName(),Message: r.GetMessage()}); err != nil {
+	for _, r := range s.messages {
+		if err := stream.Send(&pb.GetMessagesResponse{
+			Type: r.GetType(),Timestamp: r.GetTimestamp(),Source: r.GetSource(),Event: r.GetEvent(),ReplyToken: r.GetReplyToken()}); err != nil {
 			return err
 		}
 	}
 
-	previousCount := len(s.requests)
+	previousCount := len(s.messages)
 
 	for {
-		currentCount := len(s.requests)
+		currentCount := len(s.messages)
 		if previousCount < currentCount {
-			r := s.requests[currentCount-1]
-			log.Printf("Sent: %v", r.GetMessage())
-			if err := stream.Send(&pb.GetMessagesResponse{UserName:r.GetUserName(),Message: r.GetMessage()}); err != nil {
+			r := s.messages[currentCount-1]
+			log.Printf("Sent: %v", r.GetEvent().String())
+			if err := stream.Send(&pb.GetMessagesResponse{
+				Type: r.GetType(),Timestamp: r.GetTimestamp(),Source: r.GetSource(),Event: r.GetEvent(),ReplyToken: r.GetReplyToken()}); err != nil {
 				return err
 			}
 		}
@@ -43,14 +47,22 @@ func (s *server) GetMessages(req *pb.GetMessagesRequest, stream pb.Messenger_Get
 }
 
 func (s *server) CreateMessage(ctx context.Context, req *pb.CreateMessageRequest) (*pb.CreateMessageResponse, error) {
-	log.Printf("Received: %v", req.GetMessage())
-	loc, err := time.LoadLocation(location)
-	if err != nil {
-		loc = time.FixedZone(location, 9*60*60)
+	res := &pb.CreateMessageResponse{
+		Type: req.GetType(),
+		Timestamp: req.GetTimestamp(),
+		Source: req.GetSource(),
+		Event: req.GetEvent(),
 	}
-	newR := &pb.CreateMessageRequest{UserName:req.GetUserName(),Message: req.GetMessage() + ": " + time.Now().In(loc).Format("2006-01-02 15:04:05")}
-	s.requests = append(s.requests, newR)
-	return &pb.CreateMessageResponse{UserName:req.GetUserName(),Message: req.GetMessage()}, nil
+	resJson,err := json.Marshal(res)
+	if err!=nil{
+		return nil,err
+	}
+	replyToken := md5.Sum(resJson)
+	res.ReplyToken = hex.EncodeToString(replyToken[:])
+	log.Printf("Received: %+v", res)
+
+	s.messages = append(s.messages, res)
+	return res, nil
 }
 
 func main() {

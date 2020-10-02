@@ -35,6 +35,8 @@ enum EventType {
 message Source {
   SourceType type = 1;
   string userId = 2;
+  string userName = 3;
+  bool isBot = 4;
 }
 
 enum SourceType{
