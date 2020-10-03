@@ -24,7 +24,7 @@ services:
       context: ./client
     volumes:
       - ./client:/client
-      - /client/node_modules
+#      - /client/node_modules
     ports:
       - "3000:3000"
     tty: true

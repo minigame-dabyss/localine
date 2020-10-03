@@ -102,6 +102,9 @@ export class Source extends jspb.Message {
   getUsername(): string;
   setUsername(value: string): void;
 
+  getIsbot(): boolean;
+  setIsbot(value: boolean): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Source.AsObject;
   static toObject(includeInstance: boolean, msg: Source): Source.AsObject;
@@ -115,6 +118,7 @@ export namespace Source {
     type: SourceType,
     userid: string,
     username: string,
+    isbot: boolean,
   }
 }
 

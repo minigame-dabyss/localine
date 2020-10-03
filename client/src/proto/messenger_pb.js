@@ -927,7 +927,8 @@ proto.messenger.Source.toObject = function(includeInstance, msg) {
   var f, obj = {
     type: jspb.Message.getFieldWithDefault(msg, 1, 0),
     userid: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    username: jspb.Message.getFieldWithDefault(msg, 3, "")
+    username: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    isbot: jspb.Message.getBooleanFieldWithDefault(msg, 4, false)
   };
 
   if (includeInstance) {
@@ -976,6 +977,10 @@ proto.messenger.Source.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setUsername(value);
       break;
+    case 4:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsbot(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1023,6 +1028,13 @@ proto.messenger.Source.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getIsbot();
+  if (f) {
+    writer.writeBool(
+      4,
       f
     );
   }
@@ -1080,6 +1092,24 @@ proto.messenger.Source.prototype.getUsername = function() {
  */
 proto.messenger.Source.prototype.setUsername = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional bool isBot = 4;
+ * @return {boolean}
+ */
+proto.messenger.Source.prototype.getIsbot = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 4, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.messenger.Source} returns this
+ */
+proto.messenger.Source.prototype.setIsbot = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 4, value);
 };
 
 
